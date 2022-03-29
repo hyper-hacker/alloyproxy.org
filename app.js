@@ -69,11 +69,7 @@ app.use(config.prefix, (req, res, next) => {
 
     if (config.cookie_auth && !config.cookie_auth == false) {
 
-        if (req.headers['cookie'] && req.headers['cookie'].match(config.cookie_auth)) return Unblocker.app(req, res, next);
-    
-        res.send(fs.readFileSync('./error.html', { encoding: 'utf8' }).replace('%ERR%', 'Authorization required'));
-
-        res.statusCode = 400;
+Unblocker.app(req, res, next);
 
     } else Unblocker.app(req, res, next);
     
@@ -110,7 +106,7 @@ app.post(`/session/`, async(req, res, next) => {
 
         if (config.cookie_auth && !config.cookie_auth == false) {
 
-            res.set('Set-Cookie', config.cookie_auth + `; path=${config.prefix};`);
+        return res.redirect(config.prefix + rewrite.url(req.body.url));
 
         };
 
